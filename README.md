@@ -6,4 +6,4 @@ In a server-driven UI architecture, the client-side application acts as a render
 
 Key features of server-driven UI include:
 
-- <br> Dynamic UI Generation </br>: The UI components are generated on the server-side and sent to the client as data. This enables real-time updates and UI changes without requiring app updates.
+- <h2> Dynamic UI Generation </h2>: The UI components are generated on the server-side and sent to the client as data. This enables real-time updates and UI changes without requiring app updates.
