@@ -13,6 +13,9 @@ Key features of server-driven UI include:
 - <h4>Personalization</h4> The server can tailor the UI to individual users, providing a more personalized experience.
 
 
+## Check this [Video](https://streamable.com/jfi0la)
+
+
 ## ⚒️: Tech Stack.
 1. [Kotlin](https://developer.android.com/kotlin)
 2. [Dagger Hilt](https://developer.android.com/training/dependency-injection/hilt-android)
