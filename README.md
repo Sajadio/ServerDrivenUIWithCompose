@@ -18,8 +18,9 @@ Key features of server-driven UI include:
 
 ## ⚒️: Tech Stack.
 1. [Kotlin](https://developer.android.com/kotlin)
-2. [Dagger Hilt](https://developer.android.com/training/dependency-injection/hilt-android)
-3. [Firebase as basckend](https://firebase.google.com/)
+2. [Jetpack Compose](https://developer.android.com/jetpack/compose/setup?authuser=1#:~:text=%20To%20create%20a%20new%20project%20that%20include,Kotlin%20is%20the...%206%20Click%20Finish.%20See%20More.)
+3. [Dagger Hilt](https://developer.android.com/training/dependency-injection/hilt-android)
+4. [Firebase as basckend](https://firebase.google.com/)
 
 
 ## Prerequisites
