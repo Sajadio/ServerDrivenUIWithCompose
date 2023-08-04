@@ -72,6 +72,7 @@ dependencies {
 
     implementation(platform("com.google.firebase:firebase-bom:32.2.0"))
     implementation("com.google.firebase:firebase-analytics-ktx")
+    implementation("com.google.firebase:firebase-firestore-ktx:24.4.1")
 
     // Room
     implementation("androidx.room:room-runtime:2.4.3")
@@ -80,11 +81,14 @@ dependencies {
     implementation("androidx.room:room-ktx:2.4.3")
 
     // Navigation
-    implementation ("androidx.hilt:hilt-navigation-compose:1.0.0")
-    implementation ("androidx.navigation:navigation-compose:2.5.3")
+    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
+    implementation("androidx.navigation:navigation-compose:2.5.3")
 
     // Dagger-Hilt
-    implementation ("com.google.dagger:hilt-android:2.44")
-    kapt ("com.google.dagger:hilt-compiler:2.44")
+    implementation("com.google.dagger:hilt-android:2.44")
+    kapt("com.google.dagger:hilt-compiler:2.44")
+
+    // Coil
+    implementation ("io.coil-kt:coil-compose:2.2.2")
 
 }
