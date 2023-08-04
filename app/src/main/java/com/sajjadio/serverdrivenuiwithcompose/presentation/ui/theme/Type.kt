@@ -1,4 +1,4 @@
-package com.sajjadio.serverdrivenuiwithcompose.ui.theme
+package com.sajjadio.serverdrivenuiwithcompose.presentation.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

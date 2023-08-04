@@ -1,4 +1,4 @@
-package com.sajjadio.serverdrivenuiwithcompose.ui.theme
+package com.sajjadio.serverdrivenuiwithcompose.presentation.ui.theme
 
 import android.app.Activity
 import android.os.Build

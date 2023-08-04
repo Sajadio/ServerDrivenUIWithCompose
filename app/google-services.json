@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "294016574061",
+    "project_id": "serverdrivenuiwithcompose",
+    "storage_bucket": "serverdrivenuiwithcompose.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:294016574061:android:77478267ab4d0b085c5564",
+        "android_client_info": {
+          "package_name": "com.sajjadio.serverdrivenuiwithcompose"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "294016574061-414mlua3jfsqcjn83f7rql3p58m8aia2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sajjadio.serverdrivenuiwithcompose",
+            "certificate_hash": "2d348c8c0ad317c45e1f527147bcaaaf9f05fd69"
+          }
+        },
+        {
+          "client_id": "294016574061-p4dbt17e0kq7gcvvhja1en7qp9uqi99u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBBxBdO1mVXrifGFvMls6LEMyxrJsDs0vk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "294016574061-p4dbt17e0kq7gcvvhja1en7qp9uqi99u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
