@@ -1,4 +1,4 @@
-package com.sajjadio.serverdrivenuiwithcompose.presentation.screens.home
+package com.sajjadio.serverdrivenuiwithcompose.presentation.home
 
 import com.sajjadio.serverdrivenuiwithcompose.data.datasource.model.CardUiData
 

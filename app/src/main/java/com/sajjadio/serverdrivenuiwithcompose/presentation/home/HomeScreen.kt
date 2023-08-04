@@ -1,4 +1,4 @@
-package com.sajjadio.serverdrivenuiwithcompose.presentation.screens.home
+package com.sajjadio.serverdrivenuiwithcompose.presentation.home
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.BorderStroke
@@ -36,6 +36,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
 @Composable
 fun HomeScreen(
@@ -44,7 +46,14 @@ fun HomeScreen(
     val noteUiState by viewModel.noteUiState.collectAsState()
     val topAppBarUiState by viewModel.topAppBarUiState.collectAsState()
     val cardUiState by viewModel.cardUiState.collectAsState()
-    HomeContent(noteUiState, topAppBarUiState, cardUiState, onRefreshUi = viewModel::onRefreshUi)
+    val isRefreshing by viewModel.isRefreshing.collectAsState()
+    HomeContent(
+        noteUiState,
+        topAppBarUiState,
+        cardUiState,
+        onRefreshUi = viewModel::onRefreshUi,
+        isRefreshing = isRefreshing
+    )
 }
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -54,7 +63,8 @@ private fun HomeContent(
     noteUiState: NoteUiState,
     topAppBarUiState: TopAppBarUiState,
     cardUiState: CardUiState,
-    onRefreshUi: () -> Unit
+    onRefreshUi: () -> Unit,
+    isRefreshing: Boolean
 ) {
 
     var topAppBarTitle by remember {
@@ -108,9 +118,6 @@ private fun HomeContent(
 
     }
 
-
-
-
     Scaffold(
         topBar = {
             TopAppBar(
@@ -122,85 +129,63 @@ private fun HomeContent(
             )
         },
     ) {
-        LazyColumn(
-            modifier = Modifier.padding(it)
-        ) {
+        SwipeRefresh(state = rememberSwipeRefreshState(isRefreshing = isRefreshing), onRefresh =  onRefreshUi) {
+            LazyColumn(
+                modifier = Modifier.padding(it)
+            ) {
 
-            item {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(vertical = 16.dp),
-                    contentAlignment = Alignment.Center
-                ){
-                    Button(onClick = onRefreshUi) {
-                        Text(text = "Refresh")
+              if (noteUiState.error.isNotBlank()) {
+                    item {
+                        Text(text = noteUiState.error)
                     }
-                }
-            }
+                } else {
+                    items(noteUiState.data) { note ->
+                        Card(
+                            modifier = Modifier.padding(16.dp),
+                            shape = RoundedCornerShape(cardShapeSize.dp),
+                            colors = cardColors(containerColor = Color(cardBackgroundColor)),
+                            border = BorderStroke(
+                                width = cardBorderWidth.dp,
+                                color = Color(cardBorderColor)
+                            )
+                        ) {
+                            Image(
+                                painter = rememberAsyncImagePainter(model = note.note_image),
+                                contentDescription = "",
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(200.dp),
+                                contentScale = ContentScale.FillWidth
+                            )
+                            Text(
+                                text = note.note_title.toString(), style = TextStyle(
+                                    fontSize = 18.sp,
+                                    fontWeight = FontWeight.SemiBold,
+                                    color = Color(cardTitleColor)
+                                ),
+                                modifier = Modifier.padding(16.dp)
+                            )
+                            Text(
+                                text = note.note_description.toString(),
+                                style = TextStyle(
+                                    fontSize = 14.sp,
+                                    fontWeight = FontWeight.Normal,
+                                    color = Color(cardDescriptionColor)
+                                ),
+                                modifier = Modifier.padding(horizontal = 16.dp)
+                            )
+                            Text(
+                                text = note.note_date_created.toString(), style = TextStyle(
+                                    fontSize = 12.sp,
+                                    fontWeight = FontWeight.Normal,
+                                    color = Color(cardDateColor)
+                                ),
+                                modifier = Modifier.padding(16.dp)
+                            )
+                        }
+                    }
 
-            if (noteUiState.isLoading) {
-                item {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(vertical = 16.dp),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        CircularProgressIndicator()
-                    }
                 }
-            } else if (noteUiState.error.isNotBlank()) {
-                item {
-                    Text(text = noteUiState.error)
-                }
-            } else {
-                items(noteUiState.data) { note ->
-                    Card(
-                        modifier = Modifier.padding(16.dp),
-                        shape = RoundedCornerShape(cardShapeSize.dp),
-                        colors = cardColors(containerColor = Color(cardBackgroundColor)),
-                        border = BorderStroke(
-                            width = cardBorderWidth.dp,
-                            color = Color(cardBorderColor)
-                        )
-                    ) {
-                        Image(
-                            painter = rememberAsyncImagePainter(model = note.note_image),
-                            contentDescription = "",
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(200.dp),
-                            contentScale = ContentScale.FillWidth
-                        )
-                        Text(
-                            text = note.note_title.toString(), style = TextStyle(
-                                fontSize = 18.sp,
-                                fontWeight = FontWeight.SemiBold,
-                                color = Color(cardTitleColor)
-                            ),
-                            modifier = Modifier.padding(16.dp)
-                        )
-                        Text(
-                            text = note.note_description.toString(),
-                            style = TextStyle(
-                                fontSize = 14.sp,
-                                fontWeight = FontWeight.Normal,
-                                color = Color(cardDescriptionColor)
-                            ),
-                            modifier = Modifier.padding(horizontal = 16.dp)
-                        )
-                        Text(
-                            text = note.note_date_created.toString(), style = TextStyle(
-                                fontSize = 12.sp,
-                                fontWeight = FontWeight.Normal,
-                                color = Color(cardDateColor)
-                            ),
-                            modifier = Modifier.padding(16.dp)
-                        )
-                    }
-                }
-
             }
         }
     }

@@ -1,4 +1,4 @@
-package com.sajjadio.serverdrivenuiwithcompose.presentation.screens.home
+package com.sajjadio.serverdrivenuiwithcompose.presentation.home
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.sajjadio.serverdrivenuiwithcompose.domain.Resource
 import com.sajjadio.serverdrivenuiwithcompose.domain.repository.Repository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -26,33 +27,36 @@ class HomeViewModel @Inject constructor(
     private val _cardUiState = MutableStateFlow(CardUiState())
     val cardUiState: StateFlow<CardUiState> = _cardUiState.asStateFlow()
 
+    private val _isRefreshing = MutableStateFlow(false)
+    val isRefreshing: StateFlow<Boolean> get() = _isRefreshing.asStateFlow()
+
     init {
-        getNotes()
         onRefreshUi()
     }
 
-    fun onRefreshUi(){
+    fun onRefreshUi() {
+        getNotes()
         getTopAppBarUi()
         getCardUi()
     }
 
     private fun getNotes() {
         viewModelScope.launch {
-            _noteUiState.emit(NoteUiState(isLoading = true))
+            _isRefreshing.emit(true)
             when (val resource = repository.getNote()) {
                 is Resource.Success -> {
+                    _isRefreshing.emit(false)
                     _noteUiState.emit(
                         NoteUiState(
-                            isLoading = false,
                             data = resource.data.reversed()
                         )
                     )
                 }
 
                 is Resource.Error -> {
+                    _isRefreshing.emit(false)
                     _noteUiState.emit(
                         NoteUiState(
-                            isLoading = false,
                             error = resource.errorMessage
                         )
                     )
@@ -63,13 +67,16 @@ class HomeViewModel @Inject constructor(
 
     private fun getTopAppBarUi() {
         viewModelScope.launch {
+            _isRefreshing.emit(true)
             when (val resource = repository.getTopAppBarUi()) {
                 is Resource.Success -> {
-                    _topAppBarUiState.emit(TopAppBarUiState(data = resource.data) )
+                    _topAppBarUiState.emit(TopAppBarUiState(data = resource.data))
+                    _isRefreshing.emit(false)
                 }
 
                 is Resource.Error -> {
                     Log.d(this::class.simpleName, "getTopAppBarUi: ${resource.errorMessage}")
+                    _isRefreshing.emit(false)
                     _topAppBarUiState.emit(TopAppBarUiState(data = null))
                 }
             }
@@ -78,14 +85,17 @@ class HomeViewModel @Inject constructor(
 
     private fun getCardUi() {
         viewModelScope.launch {
+            _isRefreshing.emit(true)
             when (val resource = repository.getCardUi()) {
                 is Resource.Success -> {
                     _cardUiState.emit(CardUiState(data = resource.data))
+                    _isRefreshing.emit(false)
                 }
 
                 is Resource.Error -> {
                     Log.d(this::class.simpleName, "getCardUi: ${resource.errorMessage}")
                     _cardUiState.emit(CardUiState(data = null))
+                    _isRefreshing.emit(false)
                 }
             }
         }
